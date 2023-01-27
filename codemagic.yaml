@@ -1,0 +1,9 @@
+workflows:
+  TicTacToe-workflow:
+    scripts: 
+      - name: TicTacToe Pipeline
+        script: |
+          xcode-project run-tests \
+            --workspace TicTacToe.xcodeproj \
+            --scheme TicTacToe
+  
