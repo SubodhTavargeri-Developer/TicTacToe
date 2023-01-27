@@ -1,7 +1,9 @@
+//  Created by Subodh Tavargeri
+
 import UIKit
 
 protocol TicTacToeViewProtocol: AnyObject {
-    func displayTitle(_title: String)
+    func displayTitle(_title: ScreenTitle)
     func displayCurrentPlayerName(playerName: PlayerName)
     func setButtonTitle(title: String)
 }
@@ -41,7 +43,7 @@ class TicTacToeViewController: UIViewController {
 
 extension TicTacToeViewController: TicTacToeViewProtocol {
     
-    func displayTitle(_title: String) {
+    func displayTitle(_title: ScreenTitle) {
         self.title = _title
     }
     

@@ -1,3 +1,5 @@
+//Setup Game Model and game Protocol
+
 protocol GameProtocol {
     func playerPlays(position: Position, positionFillCompletion: (Bool) -> Void)
     func getCurrentPlayer()-> Player
@@ -48,7 +50,7 @@ class Game: GameProtocol {
     /// Calculate OneHourLightRow
     /// - Parameters:
     ///  - position: Player Position
-    /// - positionFillCompletion: Handler once player finishes playing
+    /// -  positionFillCompletion: Handler once player finishes playing
     func playerPlays(position: Position,
                      positionFillCompletion: (Bool) -> Void) {
         if isBoardPositionEmpty(position) && gameStatus.isRunning() {
@@ -71,6 +73,7 @@ class Game: GameProtocol {
         return gameStatus
     }
     
+    //Reset boardArray and reset currentPlayer
     func resetGame() {
         boardArray.removeAll()
         gameStatus = .running
@@ -78,6 +81,9 @@ class Game: GameProtocol {
         setUpBoardArray()
     }
     
+    /// UpdateGame status and set currentPlayer
+    /// - Parameters:
+    ///  - position: Player Position when player plays
     private func updateGame(_ position: Position) {
         boardArray[position.rawValue] = currentPlayer.name
         gameStatus = computeGameStatus()
@@ -87,6 +93,8 @@ class Game: GameProtocol {
         }
     }
     
+    /// Compute GameStatus when player plays
+    /// - Returns: Current Game Status
     private func computeGameStatus() -> Constant.GameStatus {
         for rule in winningRules {
             if isWinningRuleSatisfied(rule: rule) {

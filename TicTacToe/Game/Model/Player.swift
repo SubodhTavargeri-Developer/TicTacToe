@@ -4,3 +4,4 @@ struct Player: Equatable {
 }
 
 typealias PlayerName = String
+typealias ScreenTitle = String
