@@ -44,7 +44,7 @@ class TicTacToePresenter: TicTacToePresenterProtocol {
         view?.setButtonTitle(title: playedPlayer.name)
         
         if gameStatus == .finished {
-            view?.displayCurrentPlayerName(playerName: buildGameFinsihedText())
+            view?.displayCurrentPlayerName(playerName: buildGameFinishedText())
             return
         }
         
@@ -56,7 +56,7 @@ class TicTacToePresenter: TicTacToePresenterProtocol {
         displayCurrentPlayer()
     }
     
-    private func buildGameFinsihedText() -> String {
+    private func buildGameFinishedText() -> String {
         let message = String(format: Constant.Message.playerWins, arguments: [game.getCurrentPlayer().name])
         return message
     }

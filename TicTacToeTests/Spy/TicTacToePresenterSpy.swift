@@ -6,7 +6,7 @@ class TicTacToePresenterSpy: TicTacToePresenterProtocol {
         
     }
     
-    func playerClickEvent(index: Int) {
+    func playerClickEvent(position index: Int) {
         
     }
     

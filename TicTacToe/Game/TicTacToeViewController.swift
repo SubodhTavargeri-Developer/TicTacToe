@@ -2,7 +2,7 @@ import UIKit
 
 protocol TicTacToeViewProtocol: AnyObject {
     func displayTitle(_title: String)
-    func displayCurrentPlayerName(playerName: String)
+    func displayCurrentPlayerName(playerName: PlayerName)
     func setButtonTitle(title: String)
 }
 
@@ -45,7 +45,7 @@ extension TicTacToeViewController: TicTacToeViewProtocol {
         self.title = _title
     }
     
-    func displayCurrentPlayerName(playerName: String) {
+    func displayCurrentPlayerName(playerName: PlayerName) {
         labelCurrentPlayer.text = playerName
     }
     

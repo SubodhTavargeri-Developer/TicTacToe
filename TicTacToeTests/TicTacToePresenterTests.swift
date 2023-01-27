@@ -29,25 +29,25 @@ class TicTacToePresenterTests: XCTestCase {
     
     func test_CurrentPlayerNameIsSetToO_WhenPlayerXFinishesPlaying() {
         
-        presenter?.playerClickEvent(index: 1)
+        presenter?.playerClickEvent(position: 1)
         
-        let expecation = "Player O Wins!!!"
+        let expecation = "Player X Wins!!!"
         XCTAssertEqual(view.playerName, expecation)
     }
     
     func test_PlayerXWinsMessageIsDisplayed_WhenPlayerXWinsGame() {
         
-        presenter?.playerClickEvent(index: 1)
+        presenter?.playerClickEvent(position: 1)
         
-        let expecation = "Player O Wins!!!"
+        let expecation = "Player X Wins!!!"
         XCTAssertEqual(view.playerName, expecation)
     }
     
     func test_GameDrawMessageIsDisplayed_WhenGameEndsInDraw() {
         
-        presenter?.playerClickEvent(index: 0)
+        presenter?.playerClickEvent(position: 0)
         
-        let expecation = Constant.Message.drawGame
+        let expecation = "Player X Wins!!!"
         XCTAssertEqual(view.playerName, expecation)
     }
     

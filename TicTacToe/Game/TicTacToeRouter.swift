@@ -1,3 +1,5 @@
+//Setup TicTacToeRouter navigation
+
 import UIKit
 
 protocol RouterProtocol {
@@ -8,10 +10,10 @@ class TicTacToeRouter: RouterProtocol {
     
     private let navigationController: UINavigationController
     
+    //Setup navigation
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
     
     func routeToTicTacToeController() {
         let view = TicTacToeFactory.create(router: self)

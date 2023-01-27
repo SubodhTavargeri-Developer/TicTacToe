@@ -6,8 +6,15 @@ protocol GameProtocol {
 }
 
 enum Position: Int {
-    case topLeft = 0, topCentre = 1, topRight = 2, middleLeft = 3, middleCentre = 4, middleRight = 5,
-         bottomLeft = 6, bottomCentre = 7, bottomRight = 8
+    case topLeft = 0,
+         topCentre = 1,
+         topRight = 2,
+         middleLeft = 3,
+         middleCentre = 4,
+         middleRight = 5,
+         bottomLeft = 6,
+         bottomCentre = 7,
+         bottomRight = 8
 }
 
 class Game: GameProtocol {
@@ -18,6 +25,7 @@ class Game: GameProtocol {
     private var boardArray = [String]()
     private var gameStatus: Constant.GameStatus = .running
     
+    //Winning Position Rules
     private let winningRules = [
         [Position.topLeft, Position.topCentre, Position.topRight],
         [Position.middleLeft, Position.middleCentre, Position.middleRight],
@@ -37,7 +45,12 @@ class Game: GameProtocol {
         setUpBoardArray()
     }
     
-    func playerPlays(position: Position, positionFillCompletion: (Bool) -> Void) {
+    /// Calculate OneHourLightRow
+    /// - Parameters:
+    ///  - position: Player Position
+    /// - positionFillCompletion: Handler once player finishes playing
+    func playerPlays(position: Position,
+                     positionFillCompletion: (Bool) -> Void) {
         if isBoardPositionEmpty(position) && gameStatus.isRunning() {
             updateGame(position)
             positionFillCompletion(true)
@@ -46,10 +59,14 @@ class Game: GameProtocol {
         positionFillCompletion(false)
     }
     
+    /// Get Current Player
+    /// - Returns: PlayerName
     func getCurrentPlayer()-> Player {
         return currentPlayer
     }
     
+    /// Get Current GameStatus
+    /// - Returns: GameStatus
     func getGameStatus()-> Constant.GameStatus {
         return gameStatus
     }
