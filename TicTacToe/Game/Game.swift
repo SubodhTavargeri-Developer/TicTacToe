@@ -1,35 +1,32 @@
 protocol GameProtocol {
-    func playerPlays(index: Int)-> (title: String?,gameState: Constant.GameStatus)
+    func playerPlays(position: Position, positionFillCompletion: (Bool) -> Void)
     func getCurrentPlayer()-> Player
     func getGameStatus()-> Constant.GameStatus
     func resetGame()
 }
 
+enum Position: Int {
+    case topLeft = 0, topCentre = 1, topRight = 2, middleLeft = 3, middleCentre = 4, middleRight = 5,
+         bottomLeft = 6, bottomCentre = 7, bottomRight = 8
+}
+
 class Game: GameProtocol {
     
-    private var playerX: Player
-    private var playerO: Player
+    private let playerX: Player
+    private let playerO: Player
     private var currentPlayer: Player
     private var boardArray = [String]()
     private var gameStatus: Constant.GameStatus = .running
     
-    private enum Postions: Int {
-        case topLeft = 0,
-             topCentre = 1,
-             topRight = 2,
-             middleLeft = 3,
-             middleCentre = 4,
-             middleRight = 5,
-             bottomLeft = 6,
-             bottomCentre = 7,
-             bottomRight = 8
-    }
-    
     private let winningRules = [
-        [Postions.topLeft.rawValue,Postions.topCentre.rawValue,Postions.topRight.rawValue],[Postions.middleLeft.rawValue,Postions.middleCentre.rawValue,Postions.middleRight.rawValue],
-        [Postions.bottomLeft.rawValue,Postions.bottomCentre.rawValue,Postions.bottomRight.rawValue],[Postions.topLeft.rawValue,Postions.middleLeft.rawValue,Postions.bottomLeft.rawValue],
-        [Postions.topCentre.rawValue,Postions.middleCentre.rawValue,Postions.bottomCentre.rawValue],[Postions.topRight.rawValue,Postions.middleRight.rawValue,Postions.bottomRight.rawValue],
-        [Postions.topLeft.rawValue,Postions.middleCentre.rawValue,Postions.bottomRight.rawValue],[Postions.topRight.rawValue,Postions.middleCentre.rawValue,Postions.bottomLeft.rawValue]
+        [Position.topLeft, Position.topCentre, Position.topRight],
+        [Position.middleLeft, Position.middleCentre, Position.middleRight],
+        [Position.bottomLeft, Position.bottomCentre, Position.bottomRight],
+        [Position.topLeft, Position.middleLeft, Position.bottomLeft],
+        [Position.topCentre, Position.middleCentre, Position.bottomCentre],
+        [Position.topRight, Position.middleRight, Position.bottomRight],
+        [Position.topLeft, Position.middleCentre, Position.bottomRight],
+        [Position.topRight, Position.middleCentre, Position.bottomLeft]
     ]
     
     
@@ -40,76 +37,13 @@ class Game: GameProtocol {
         setUpBoardArray()
     }
     
-    private func setUpBoardArray() {
-        for _ in 1...9 {
-            boardArray.append("")
-        }
-    }
-    
-    private func insertIntoBoardArray(index: Int) {
-        boardArray[index] = currentPlayer.name
-    }
-    
-    func playerPlays(index: Int)-> (title: String?,gameState: Constant.GameStatus) {
-        
-        if boardArray[index].isEmpty && gameStatus == .running {
-            insertIntoBoardArray(index: index)
-            
-            gameStatus = computeGameStatus()
-            switch gameStatus {
-            case .running:
-                currentPlayer = (currentPlayer == playerX) ? playerO : playerX
-                return (boardArray[index],gameStatus)
-            case .finished:
-                return (winningMessage(),gameStatus)
-            case .draw:
-                return (Constant.Message.drawGame,gameStatus)
-            }
-        }
-        return (nil,gameStatus)
-    }
-    
-    private func winningMessage() -> String {
-        let message = String(format: Constant.Message.playerWins, arguments: [currentPlayer.name])
-        return message
-    }
-    
-    private func computeGameStatus()-> Constant.GameStatus {
-        
-        for rule in winningRules {
-            let playerPositionAsPerRule0 = boardArray[rule[0]]
-            let playerPositionAsPerRule1 = boardArray[rule[1]]
-            let playerPositionAsPerRule2 = boardArray[rule[2]]
-            
-            if checkForWinCondition(playerPositionIndex0: playerPositionAsPerRule0,
-                                    playerPositionIndex1: playerPositionAsPerRule1,
-                                    playerPositionIndex2: playerPositionAsPerRule2) {
-                return .finished
-            }
+    func playerPlays(position: Position, positionFillCompletion: (Bool) -> Void) {
+        if isBoardPositionEmpty(position) && gameStatus.isRunning() {
+            updateGame(position)
+            positionFillCompletion(true)
         }
         
-        if checkForDrawCondition() {
-            return .draw
-        }
-        return .running
-    }
-    
-    private func checkForDrawCondition()-> Bool {
-        return !boardArray.contains("")
-    }
-    
-    private func setGameStatus(status: Constant.GameStatus) {
-        gameStatus = status
-    }
-    private func checkForWinCondition(playerPositionIndex0: String,
-                                      playerPositionIndex1: String,
-                                      playerPositionIndex2: String)-> Bool {
-        
-        if playerPositionIndex0 == playerPositionIndex1 &&
-            playerPositionIndex2 == playerPositionIndex1 && !playerPositionIndex0.isEmpty {
-            return true
-        }
-        return false
+        positionFillCompletion(false)
     }
     
     func getCurrentPlayer()-> Player {
@@ -122,8 +56,52 @@ class Game: GameProtocol {
     
     func resetGame() {
         boardArray.removeAll()
-        setGameStatus(status: .running)
+        gameStatus = .running
         currentPlayer = playerX
         setUpBoardArray()
     }
+    
+    private func updateGame(_ position: Position) {
+        boardArray[position.rawValue] = currentPlayer.name
+        gameStatus = computeGameStatus()
+        
+        if gameStatus.isRunning() {
+            currentPlayer = (currentPlayer == playerX) ? playerO : playerX
+        }
+    }
+    
+    private func computeGameStatus() -> Constant.GameStatus {
+        for rule in winningRules {
+            if isWinningRuleSatisfied(rule: rule) {
+                return .finished
+            }
+        }
+        
+        if checkForDrawCondition() {
+            return .draw
+        }
+        
+        return .running
+    }
+    
+    private func isWinningRuleSatisfied(rule: [Position]) -> Bool {
+        boardArray[rule[0].rawValue] == currentPlayer.name
+        && boardArray[rule[1].rawValue] == currentPlayer.name
+        && boardArray[rule[2].rawValue] == currentPlayer.name
+    }
+    
+    private func checkForDrawCondition() -> Bool {
+        return !boardArray.contains("")
+    }
+    
+    private func setUpBoardArray() {
+        for _ in 1...9 {
+            boardArray.append("")
+        }
+    }
+    
+    private func isBoardPositionEmpty(_ positionIndex: Position) -> Bool {
+        boardArray[positionIndex.rawValue].isEmpty
+    }
 }
+

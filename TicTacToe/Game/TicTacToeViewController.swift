@@ -27,7 +27,7 @@ class TicTacToeViewController: UIViewController {
     
     @IBAction func buttonAction(_ sender: UIButton) {
         senderButton = sender
-        presenter?.playerClickEvent(index: senderButton?.tag ?? 100)
+        presenter?.playerClickEvent(position: senderButton?.tag ?? 100)
     }
     
     @IBAction func resetGame() {

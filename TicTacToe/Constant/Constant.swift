@@ -11,5 +11,9 @@ struct Constant {
     
     enum GameStatus {
         case running, finished, draw
+        
+        func isRunning() -> Bool {
+            self == .running
+        }
     }
 }
