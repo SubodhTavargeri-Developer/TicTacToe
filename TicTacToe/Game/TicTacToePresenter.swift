@@ -1,3 +1,6 @@
+//  Created by Subodh Tavargeri on 28/01/2023.
+//  Setup Game Model and game Protocol
+
 protocol TicTacToePresenterProtocol {
     func loadPresenter()
     func playerClickEvent(position: Int)
@@ -9,6 +12,10 @@ class TicTacToePresenter: TicTacToePresenterProtocol {
     private weak var view: TicTacToeViewProtocol?
     private let game: GameProtocol
     
+    /// Depedency Injection for Presenter
+    /// - Parameters:
+    ///  - view: ViewControllerProtocol
+    /// -  game: GameProtocl
     init(view: TicTacToeViewProtocol,
          game: GameProtocol) {
         self.view = view

@@ -1,4 +1,5 @@
-//Setup Game Model and game Protocol
+//  Created by Subodh Tavargeri on 24/11/22.
+//  Setup Game Model and game Protocol
 
 protocol GameProtocol {
     func playerPlays(position: Position, positionFillCompletion: (Bool) -> Void)
@@ -101,7 +102,7 @@ class Game: GameProtocol {
                 return .finished
             }
         }
-        
+        //check if Game is an Draw
         if checkForDrawCondition() {
             return .draw
         }

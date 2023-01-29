@@ -1,4 +1,5 @@
-//  Created by Subodh Tavargeri
+//  Created by Subodh Tavargeri on 28/01/2023.
+//  ViewController to display TicTacToeGame UI
 
 import UIKit
 
@@ -19,6 +20,7 @@ class TicTacToeViewController: UIViewController {
     func setupPresenter(_presenter: TicTacToePresenterProtocol) {
         self.presenter = _presenter
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.loadPresenter()
@@ -27,11 +29,13 @@ class TicTacToeViewController: UIViewController {
         }
     }
     
+    //  When user clicks on Any of the box
     @IBAction func buttonAction(_ sender: UIButton) {
         senderButton = sender
         presenter?.playerClickEvent(position: senderButton?.tag ?? 100)
     }
     
+    //  Reset to start game
     @IBAction func resetGame() {
         presenter?.resetGame()
         
