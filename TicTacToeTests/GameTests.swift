@@ -79,4 +79,5 @@ class GameTests: XCTestCase {
         
         XCTAssertEqual(game.getCurrentPlayer().name, "X")
     }
+    
 }

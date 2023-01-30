@@ -20,3 +20,7 @@ struct Constant {
         }
     }
 }
+
+typealias PlayerName = String
+typealias ScreenTitle = String
+typealias PlayerClickedPosition = Int

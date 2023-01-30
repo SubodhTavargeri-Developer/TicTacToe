@@ -3,7 +3,7 @@
 
 protocol TicTacToePresenterProtocol {
     func loadPresenter()
-    func playerClickEvent(position: Int)
+    func playerClickEvent(position: PlayerClickedPosition)
     func resetGame()
 }
 
@@ -27,7 +27,10 @@ class TicTacToePresenter: TicTacToePresenterProtocol {
         displayCurrentPlayer()
     }
     
-    func playerClickEvent(position: Int) {
+    /// Player Position Clicked
+    /// - Parameters:
+    ///  - position: Current Player Position Clicked
+    func playerClickEvent(position: PlayerClickedPosition) {
         guard let position = Position(rawValue: position) else {
             return
         }
@@ -41,6 +44,7 @@ class TicTacToePresenter: TicTacToePresenterProtocol {
         }
     }
     
+    //  Reset entire game
     func resetGame() {
         game.resetGame()
         displayCurrentPlayer()
